@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Share2, Link2, Check, Mail, MessageCircle, Send } from 'lucide-react';
+import { Share2, Link2, Check, MessageCircle, Send } from 'lucide-react';
 
 // Botones para compartir la URL permanente del vídeo.
 export default function ShareButtons({ url, title }) {
@@ -55,12 +55,6 @@ export default function ShareButtons({ url, title }) {
       icon: Share2,
       href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
       color: 'hover:bg-[#0A66C2]/15 hover:text-[#0A66C2] hover:border-[#0A66C2]/30',
-    },
-    {
-      name: 'Correo',
-      icon: Mail,
-      href: `mailto:?subject=${encodedText}&body=${encodedText}%0A${encodedUrl}`,
-      color: 'hover:bg-zinc-500/15 hover:text-zinc-200 hover:border-zinc-500/30',
     },
   ];
 
