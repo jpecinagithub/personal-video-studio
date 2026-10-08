@@ -101,6 +101,24 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
     return res.status(200).send(html);
   } catch (e) {
+    // Sin Redis no se puede resolver el vídeo: se devuelven los metadatos
+    // genéricos del sitio (200) en lugar de un 500, para que los scrapers
+    // (WhatsApp, Telegram…) reciban siempre una vista previa válida.
+    if (String((e && e.message) || '').includes('Redis no configurado')) {
+      const canonical = baseUrl(req);
+      const html = buildOgHtml({
+        video: {
+          title: 'Personal Video Studio',
+          description: 'Plataforma personal de vídeos: publica, comparte y comenta.',
+          thumbnailUrl: '',
+          videoUrl: '',
+        },
+        canonical,
+      });
+      res.setHeader('Content-Type', 'text/html; charset=utf-8');
+      res.setHeader('Cache-Control', 'public, s-maxage=300');
+      return res.status(200).send(html);
+    }
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     return res.status(500).send('<html><body>Error interno</body></html>');
   }
