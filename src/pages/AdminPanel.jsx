@@ -31,6 +31,11 @@ export default function AdminPanel() {
       setVideos(Array.isArray(list) ? list : []);
     } catch (e) {
       if (e.status === 401) navigate('/admin', { replace: true });
+      else if (String(e.message || '').includes('Redis no configurado'))
+        setError(
+          'Redis no está configurado: crea la base de datos gratuita en Upstash y añade ' +
+            'UPSTASH_REDIS_REST_URL y UPSTASH_REDIS_REST_TOKEN en las variables de entorno de Vercel.'
+        );
       else setError('No se pudieron cargar los vídeos.');
     } finally {
       setLoading(false);
